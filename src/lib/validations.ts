@@ -39,7 +39,7 @@ export const leadStatusSchema = z.object({
 });
 
 export const leadFiltersSchema = z.object({
-  q: z.string().trim().max(100).optional(),
+  q: z.string().trim().max(120).optional(),
   status: z.enum(LEAD_STATUSES).optional(),
   stateZone: z.string().trim().max(60).optional(),
 });
