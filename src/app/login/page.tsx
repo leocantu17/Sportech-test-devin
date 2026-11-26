@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ from?: string }> }) {
   const { from } = await searchParams;
   const showDemo = process.env.DEMO_MODE === "true";
-  const redirectTo = from && from.startsWith("/") && !from.startsWith("//") ? from : "/dashboard";
+  const redirectTo = from && /^\/(?!\/)/.test(from) && !/[\\\u0000-\u001f]/.test(from) ? from : "/dashboard";
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-ink px-4 py-10">
