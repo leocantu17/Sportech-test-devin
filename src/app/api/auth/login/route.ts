@@ -5,6 +5,9 @@ import { loginSchema, fieldErrors } from "@/lib/validations";
 import { SESSION_COOKIE, sessionCookieOptions, signSession } from "@/lib/session";
 
 export async function POST(request: Request) {
+  if (!request.headers.get("content-type")?.includes("application/json")) {
+    return NextResponse.json({ error: "Content-Type debe ser application/json" }, { status: 415 });
+  }
   const body = await request.json().catch(() => null);
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success) {
