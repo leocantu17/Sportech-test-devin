@@ -25,6 +25,7 @@ const SELECTS = [
 
 export function NewLeadModal({ open, onClose, onCreated }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[] | undefined>>({});
@@ -34,12 +35,31 @@ export function NewLeadModal({ open, onClose, onCreated }: Props) {
     setError(null);
     setFieldErrors({});
     formRef.current?.reset();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && !loading && onClose();
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    document.getElementById("companyName")?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !loading) onClose();
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>("input, select, textarea, button:not([disabled])");
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialogRef.current.contains(document.activeElement)) {
+        e.preventDefault();
+        first?.focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      previouslyFocused?.focus();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -73,6 +93,7 @@ export function NewLeadModal({ open, onClose, onCreated }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 sm:items-center sm:p-4" onClick={() => !loading && onClose()}>
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="new-lead-title"
