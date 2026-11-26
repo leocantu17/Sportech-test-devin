@@ -1,0 +1,15 @@
+# PostgreSQL local para desarrollo: docker compose up -d
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sportech
+      POSTGRES_PASSWORD: sportech
+      POSTGRES_DB: sportech_crm
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

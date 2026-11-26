@@ -42,7 +42,7 @@ export async function listLeads(filters: { q?: string; status?: LeadStatusValue;
   if (filters.stateZone) where.stateZone = filters.stateZone;
 
   const leads = await prisma.lead.findMany({ where, orderBy: { createdAt: "desc" } });
-  // Búsqueda sin distinguir mayúsculas ni acentos ("atletico" encuentra "Atlético"), igual en SQLite y PostgreSQL.
+  // Búsqueda sin distinguir mayúsculas ni acentos ("atletico" encuentra "Atlético") en cualquier base.
   const q = filters.q ? normalize(filters.q) : "";
   const matches = q
     ? leads.filter((l) => normalize(l.companyName).includes(q) || normalize(l.contactName).includes(q))

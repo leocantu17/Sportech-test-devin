@@ -8,8 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
+    "db:deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {
