@@ -27,7 +27,8 @@ export const leadCreateSchema = z.object({
   phone: z
     .string()
     .trim()
-    .regex(/^\+?[\d\s()-]{8,20}$/, "Teléfono inválido (8 a 20 dígitos)"),
+    .regex(/^\+?[\d\s()-]+$/, "Teléfono inválido")
+    .refine((v) => /^\d{8,15}$/.test(v.replace(/\D/g, "")), "El teléfono debe tener entre 8 y 15 dígitos"),
   stateZone: trimmed(2, 60, "El estado/zona"),
   businessType: trimmed(2, 80, "El tipo de negocio"),
   estimatedVolume: trimmed(1, 80, "El volumen estimado"),
