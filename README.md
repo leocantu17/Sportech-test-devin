@@ -100,7 +100,6 @@ curl -X POST http://localhost:3000/api/leads \
 1. En `prisma/schema.prisma` cambia `provider = "sqlite"` por `provider = "postgresql"`.
 2. Define `DATABASE_URL="postgresql://usuario:password@host:5432/sportech_crm"`.
 3. Borra `prisma/migrations` y genera la migración inicial para PostgreSQL: `npx prisma migrate dev --name init` (en producción: `npx prisma migrate deploy`).
-4. Para búsquedas sin distinguir mayúsculas en PostgreSQL agrega `mode: "insensitive"` a los filtros `contains` en `src/lib/leads.ts` (en SQLite ya lo son).
 
 ## Estructura
 
