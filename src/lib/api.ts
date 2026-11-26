@@ -21,7 +21,7 @@ export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     if (res.status === 401 && typeof window !== "undefined" && !url.includes("/api/auth/login")) {
-      window.location.href = "/login";
+      window.location.href = "/api/auth/logout";
     }
     throw new ApiError(data?.error ?? "Ocurrió un error inesperado", res.status, data?.fieldErrors);
   }
